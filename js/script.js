@@ -572,15 +572,16 @@ async function renderTripDetails(params) {
     if (String(sDay).includes('undefined')) sDay = '—';
     if (String(eDay).includes('undefined')) eDay = '—';
 
+    // УВАГА: ТУТ ПРИБРАНО escapeHtml ДЛЯ СТАНУ "ДО" (XSS ВРАЗЛИВІСТЬ)
     let html = `
         <div style="margin-bottom: 20px;">
             <a href="#/" data-link style="color: #028090; font-weight: bold; text-decoration: none;">← Повернутися до всіх поїздок</a>
         </div>
         <section class="card" style="padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
             <h2>Маршрут: ${escapeHtml(trip.destination)}</h2>
-            <p><strong>Дати:</strong> ${escapeHtml(sDay)} – ${escapeHtml(eDay)} (${trip.days || 0} днів)</p>
+            <p><strong>Дати:</strong> ${sDay} – ${eDay} (${trip.days || 0} днів)</p>
             <p><strong>Бюджет:</strong> €${trip.budget || 0}</p>
-            <p><strong>Статус:</strong> ${escapeHtml(trip.status || 'Заплановано')}</p>
+            <p><strong>Статус:</strong> ${trip.status || 'Заплановано'}</p>
 
             <h3 style="margin-top: 25px; color: #028090;">Пункти зупинки:</h3>
     `;
@@ -592,8 +593,8 @@ async function renderTripDetails(params) {
         stops.forEach(stop => {
             html += `
                 <li style="border: 1px solid #ddd; padding: 12px; margin-bottom: 10px; border-radius: 6px; background: #fafafa;">
-                    <strong>${escapeHtml(stop.name)}</strong> (${escapeHtml(stop.duration)})<br>
-                    <p style="margin: 5px 0;">${escapeHtml(stop.description)}</p>
+                    <strong>${stop.name}</strong> (${stop.duration})<br>
+                    <p style="margin: 5px 0;">${stop.description}</p>
                     <a href="#/trip/${encodeURIComponent(trip.id)}/stop/${encodeURIComponent(stop.stopId)}" data-link style="color: #008080; font-weight: bold; text-decoration: none;">Деталі цієї зупинки →</a>
                 </li>
             `;
@@ -624,13 +625,13 @@ async function renderStopDetails(params) {
 
     appContainer.innerHTML = `
         <div style="margin-bottom: 20px;">
-            <a href="#/trip/${encodeURIComponent(trip.id)}" data-link style="color: #028090; font-weight: bold; text-decoration: none;">← Назад до поїздки "${escapeHtml(trip.destination)}"</a>
+            <a href="#/trip/${encodeURIComponent(trip.id)}" data-link style="color: #028090; font-weight: bold; text-decoration: none;">← Назад до поїздки "${trip.destination}"</a>
         </div>
         <section class="card" style="padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
-            <h2>Зупинка: ${escapeHtml(stop.name)}</h2>
-            <p><strong>Подорож:</strong> ${escapeHtml(trip.destination)}</p>
-            <p><strong>Запланована тривалість:</strong> ${escapeHtml(stop.duration)}</p>
-            <p><strong>Детальний опис:</strong> ${escapeHtml(stop.description)}</p>
+            <h2>Зупинка: ${stop.name}</h2>
+            <p><strong>Подорож:</strong> ${trip.destination}</p>
+            <p><strong>Запланована тривалість:</strong> ${stop.duration}</p>
+            <p><strong>Детальний опис:</strong> ${stop.description}</p>
         </section>
     `;
 }
