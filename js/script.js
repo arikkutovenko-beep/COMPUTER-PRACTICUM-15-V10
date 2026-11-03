@@ -572,7 +572,6 @@ async function renderTripDetails(params) {
     if (String(sDay).includes('undefined')) sDay = '—';
     if (String(eDay).includes('undefined')) eDay = '—';
 
-    // УВАГА: ТУТ ПРИБРАНО escapeHtml ДЛЯ СТАНУ "ДО" (XSS ВРАЗЛИВІСТЬ)
     let html = `
         <div style="margin-bottom: 20px;">
             <a href="#/" data-link style="color: #028090; font-weight: bold; text-decoration: none;">← Повернутися до всіх поїздок</a>
